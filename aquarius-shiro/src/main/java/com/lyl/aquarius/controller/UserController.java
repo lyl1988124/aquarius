@@ -1,4 +1,4 @@
-package com.lyl.aquarius.shiro.controller;
+package com.lyl.aquarius.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
