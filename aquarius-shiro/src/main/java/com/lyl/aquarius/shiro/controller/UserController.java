@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author lyl_pc
  */
-@Api(tags ={"生产者进程API接口"})
+@Api(value ="生产者进程API接口")
 @RestController
 @RequestMapping("/producer")
 public class UserController {

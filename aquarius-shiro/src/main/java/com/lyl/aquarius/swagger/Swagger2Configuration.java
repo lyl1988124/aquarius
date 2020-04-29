@@ -1,4 +1,4 @@
-package com.lyl.aquarius.shiro.swagger;
+package com.lyl.aquarius.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
