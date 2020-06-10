@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -63,17 +64,19 @@ public class UserController {
         return "";
     }
 
+    @RequiresRoles(value = {"user"})
     @ApiOperation(value="查找用户信息", notes="查找用户信息")
-    @RequestMapping(value="/user", method= RequestMethod.GET)
+    @RequestMapping(value="/{userId}", method= RequestMethod.GET)
     @ResponseBody
-    public String getUser(@Nullable String text,@Nullable HttpServletRequest request) {
-        logger.info("查找用户信息：{}", text);
+    public String getUser(
+        @ApiParam(value = "param userId")
+        @PathVariable(value = "userId")String userId) {
+        logger.info("查找用户信息：{}", userId);
 
-        Cookie[] cookies = request.getCookies();
 
 
         try {
-            return "userInfo = "+text;
+            return "userInfo = "+userId;
         } catch (Exception e) {
             e.printStackTrace();
         }

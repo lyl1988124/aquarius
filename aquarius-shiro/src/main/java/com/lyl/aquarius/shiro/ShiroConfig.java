@@ -1,7 +1,9 @@
 package com.lyl.aquarius.shiro;
 
+import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SessionsSecurityManager;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.session.mgt.eis.MemorySessionDAO;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
@@ -45,29 +47,29 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/webjars/**", "anon");
 
 
-        filterChainDefinitionMap.put("/**", "user");
+        filterChainDefinitionMap.put("/**", "authc");
         bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return bean;
     }
 
     @Bean
-    public AquariusRealm aquariusRealm(HashedCredentialsMatcher hashedCredentialsMatcher) {
+    public Realm aquariusRealm(CredentialsMatcher matcher) {
         AquariusRealm realm = new AquariusRealm();
-        realm.setCredentialsMatcher(hashedCredentialsMatcher);
+        realm.setCredentialsMatcher(matcher);
         return realm;
     }
 
     @Bean
     public SessionsSecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(aquariusRealm(hashedCredentialsMatcher()));
+        securityManager.setRealm(aquariusRealm(credentialsMatcher()));
         return securityManager;
     }
 
     @Bean
-    public HashedCredentialsMatcher hashedCredentialsMatcher(){
+    public CredentialsMatcher credentialsMatcher(){
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
-        hashedCredentialsMatcher.setHashAlgorithmName(ShiroPasswordUtils.ALGORITHM_NAME);
+        hashedCredentialsMatcher.setHashAlgorithmName(ShiroPasswordUtils.ALGORITHM_NAME_MD5);
         hashedCredentialsMatcher.setHashIterations(ShiroPasswordUtils.HASH_ITERATIONS);
         return hashedCredentialsMatcher;
     }

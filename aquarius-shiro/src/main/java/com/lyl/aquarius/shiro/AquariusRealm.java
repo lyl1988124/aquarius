@@ -32,9 +32,9 @@ public class AquariusRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-
+        logger.info("AuthorizationInfo doGetAuthorizationInfo");
         //获取用户名
-        String username = (String) principalCollection.getPrimaryPrincipal();
+        User user = (User) principalCollection.getPrimaryPrincipal();
 
         //此处从数据库获取该用户的角色
         Set<String> roles = Stream.of("admin", "user").collect(Collectors.toSet());
@@ -56,9 +56,9 @@ public class AquariusRealm extends AuthorizingRealm {
 
         User user = new User();
         user.setAccount("account");
-        user.setPassword("password");
+        user.setPassword("b0f33830679c502d5988708dcaee958a");
         //set salt
-        user.setSalt("DkKjgKTGk8");
+        user.setSalt("HO5Wr5sf");
 
         if (null != user) {
             SecurityUtils.getSubject().logout();
