@@ -48,6 +48,7 @@
         <springboot.version>2.2.6.RELEASE</springboot.version>
         <shiro.version>1.5.2</shiro.version>
         <swagger2.version>2.9.2</swagger2.version>
+        <commons-lang3.version>3.10</commons-lang3.version>
     </properties>
 
     <dependencyManagement>
@@ -82,6 +83,14 @@
                 <version>${swagger2.version}</version>
             </dependency>
             <!-- swagger2 end -->
+
+            <!-- commons-lang3 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>

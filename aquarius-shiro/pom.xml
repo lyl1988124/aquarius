@@ -19,6 +19,7 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <!-- springboot end -->
+
         <!-- swagger begin -->
         <dependency>
             <groupId>io.springfox</groupId>
@@ -30,6 +31,20 @@
             <artifactId>springfox-swagger-ui</artifactId>
         </dependency>
         <!-- swagger end -->
+
+        <!-- shiro begin -->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring-boot-web-starter</artifactId>
+        </dependency>
+        <!-- shiro end -->
+
+        <!-- common-lang3 start-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <!-- common-lang3 end-->
 
     </dependencies>
 

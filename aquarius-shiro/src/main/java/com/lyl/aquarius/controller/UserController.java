@@ -2,28 +2,91 @@ package com.lyl.aquarius.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.codec.Base64;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.lang.Nullable;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.Serializable;
 
 /**
  * @author lyl_pc
  */
-@Api(value ="生产者进程API接口")
+@Api(value ="用户API接口")
 @RestController
-@RequestMapping("/producer")
+@RequestMapping("/user")
 public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @ApiOperation(value="发送解析文本", notes="发送解析文本", produces="application/json")
-    @RequestMapping(value="/sendText", method= RequestMethod.POST)
-    public String sendText(@RequestBody String text) {
+    @ApiOperation(value="发送解析文本", notes="发送解析文本")
+    @RequestMapping(value="/sendText", method= RequestMethod.GET)
+    public String sendText(@RequestParam String text) {
         logger.info("发送的文本内容：{}", text);
 
         return text;
+    }
+
+    @ApiOperation(value="用户登录", notes="发送解析文本")
+    @RequestMapping(value="/login", method= RequestMethod.POST)
+    public String login(
+        @ApiParam(value = "login info", required = false)
+        @Nullable String text,
+        @Nullable HttpServletResponse response) {
+        logger.info("发送的文本内容：{}", text);
+
+        response.addCookie(new Cookie("testCookie","cookieValue"));
+
+        try {
+            Subject subject = SecurityUtils.getSubject();
+            UsernamePasswordToken usernamePasswordToken =
+                new UsernamePasswordToken("account", "password");
+            subject.login(usernamePasswordToken);
+
+            Serializable tokenId = subject.getSession().getId();
+
+            subject.login(usernamePasswordToken);
+
+            return tokenId.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
+    @ApiOperation(value="查找用户信息", notes="查找用户信息")
+    @RequestMapping(value="/user", method= RequestMethod.GET)
+    @ResponseBody
+    public String getUser(@Nullable String text,@Nullable HttpServletRequest request) {
+        logger.info("查找用户信息：{}", text);
+
+        Cookie[] cookies = request.getCookies();
+
+
+        try {
+            return "userInfo = "+text;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
+    @ApiOperation(value="登出", notes="登出")
+    @RequestMapping(value = "/logout",method = RequestMethod.POST)
+    @ResponseBody
+    public void afterLogout(@Nullable String text) {
+        //这里一定要使用shiro退出方式，否则session失效
+        logger.info("logout：{}", text);
+        SecurityUtils.getSubject().logout();
     }
 }
