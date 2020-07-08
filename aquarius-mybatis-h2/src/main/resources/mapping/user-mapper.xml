@@ -23,8 +23,6 @@
                 #{passWord},
                 #{realName}
             )
-        value
-
 
     </insert>
 
